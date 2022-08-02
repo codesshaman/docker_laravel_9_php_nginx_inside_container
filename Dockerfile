@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ARG uid
+ARG UID
 
 RUN apk add --no-cache \
   postgresql-dev \
@@ -46,18 +46,23 @@ COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN chown -R nobody.nobody /run /var/lib/nginx /var/log/nginx /var/www
+RUN addgroup --gid $UID user && \
+    adduser -D -u $UID -G www-data -G root -G user user && \
+    mkdir -p /home/user/.composer && \
+    chown -R user:user /home/user
 
-USER nobody
+RUN chown -R user:user /run /var/lib/nginx /var/log/nginx /var/www
 
-COPY --chown=nobody laravel.zip /var/www/
+USER user
+
+COPY --chown=user laravel.zip /var/www/
 
 RUN unzip /var/www/laravel.zip
 #php artisan optimize:clear
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 # Configure a healthcheck to validate that everything is up&running
-# HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping
+# HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1/fpm-ping
