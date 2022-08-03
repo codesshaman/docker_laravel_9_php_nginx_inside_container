@@ -1,6 +1,6 @@
 FROM alpine:3.16
 
-WORKDIR /var/www/public
+WORKDIR /var/www/
 
 ARG UID
 
@@ -49,11 +49,11 @@ RUN addgroup --gid $UID user && \
     mkdir -p /home/user/.composer && \
     chown -R user:user /home/user
 
-RUN chown -R user.user /var/www/public /run /var/lib/nginx /var/log/nginx
+RUN chown -R user.user /var/www/ /run /var/lib/nginx /var/log/nginx
 
 USER user
 
-COPY --chown=user index.php /var/www/public/
+ADD --chown=user laravel.tar.gz /var/www/
 
 EXPOSE 80
 
