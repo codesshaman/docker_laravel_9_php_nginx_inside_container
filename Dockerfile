@@ -1,4 +1,6 @@
-FROM alpine:latest
+FROM alpine:3.16
+
+WORKDIR /var/www/public
 
 ARG UID
 
@@ -34,13 +36,9 @@ RUN apk add --no-cache \
 
 RUN ln -s /usr/bin/php81 /usr/bin/php
 
-WORKDIR /tmp
-
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/
-
-COPY config/nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY config/nginx.conf /etc/nginx/nginx.conf
 
 COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
 
@@ -51,18 +49,14 @@ RUN addgroup --gid $UID user && \
     mkdir -p /home/user/.composer && \
     chown -R user:user /home/user
 
-RUN chown -R user:user /run /var/lib/nginx /var/log/nginx /var/www
+RUN chown -R user.user /var/www/public /run /var/lib/nginx /var/log/nginx
 
 USER user
 
-COPY --chown=user laravel.zip /var/www/
+COPY --chown=user index.php /var/www/public/
 
-RUN unzip /var/www/laravel.zip
-#php artisan optimize:clear
-
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
-# Configure a healthcheck to validate that everything is up&running
-# HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1/fpm-ping
+# HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
   app:
@@ -8,13 +8,5 @@ services:
       args:
         UID: "1000"
     ports:
-      - "80:80"
+      - "82:8080"
     restart: unless-stopped
-
-  # sut:
-  #   image: alpine:3.13
-  #   depends_on:
-  #     - app
-  #   command: /tmp/run_tests.sh
-  #   volumes:
-  #     - "./run_tests.sh:/tmp/run_tests.sh:ro"
