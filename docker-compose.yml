@@ -8,5 +8,5 @@ services:
       args:
         UID: "1000"
     ports:
-      - "82:8080"
+      - "80:80"
     restart: unless-stopped

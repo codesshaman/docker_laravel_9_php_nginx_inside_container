@@ -55,7 +55,7 @@ USER user
 
 COPY --chown=user index.php /var/www/public/
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
