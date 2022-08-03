@@ -6,9 +6,11 @@ ARG UID
 
 RUN apk add --no-cache \
   postgresql-dev \
+  git \
   nano \
   curl \
   nginx \
+  unzip \
   php81 \
   php81-ctype \
   php81-curl \
@@ -53,9 +55,14 @@ RUN chown -R user.user /var/www/ /run /var/lib/nginx /var/log/nginx
 
 USER user
 
-ADD --chown=user laravel.tar.gz /var/www/
+# COPY --chown=user laravel/* /var/www/
+# COPY --chown=user laravel/public/* /var/www/public
 
-RUN touch .env
+# RUN tar -czvf /run/laravel.tar.gz * 
+
+# RUN touch .env
+
+RUN composer create-project laravel/laravel .
 
 EXPOSE 80
 
