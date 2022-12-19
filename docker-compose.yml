@@ -4,7 +4,8 @@ services:
   nginx:
     image: nginx:1.23.3-alpine-slim
     volumes:
-      - ./app:/var/www/html
+      - ./app:/var/www/html:z
+      # - ./logs:/var/log/nginx:z
       - ./nginx/conf.d:/etc/nginx/conf.d/
     ports:
       - "80:80"
@@ -14,12 +15,12 @@ services:
     depends_on:
       - php81
 
-
   php81:
     image: php:8.2.1RC1-fpm-alpine3.17
     ports:
       - "9000:9000"
     restart: unless-stopped
     container_name: php81
+    user: 1000:1000
     volumes:
-      - ./app:/var/www/html
+      - ./app:/var/www/html:z
