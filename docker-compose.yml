@@ -1,14 +1,25 @@
-version: '3.5'
+version: '3'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      # args:
-      #   UID: "1000"
+  nginx:
+    image: nginx:1.23.3-alpine-slim
+    volumes:
+      - ./app:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d/
     ports:
       - "80:80"
+    tty:  true
     restart: unless-stopped
+    container_name: nginx
+    depends_on:
+      - php81
+
+
+  php81:
+    image: php:8.2.1RC1-fpm-alpine3.17
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+    container_name: php81
     volumes:
-      - ./src:/var/www
+      - ./app:/var/www/html
