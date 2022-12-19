@@ -24,3 +24,4 @@ services:
     user: 1000:1000
     volumes:
       - ./app:/var/www/html:z
+      - ./php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:z
