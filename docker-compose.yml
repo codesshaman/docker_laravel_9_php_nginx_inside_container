@@ -6,7 +6,7 @@ services:
     volumes:
       - ./app:/var/www/html:z
       # - ./logs:/var/log/nginx:z
-      - ./nginx/conf.d:/etc/nginx/conf.d/
+      - ./nginx/conf.d:/etc/nginx/conf.d/:z
     ports:
       - "80:80"
     tty:  true
@@ -21,7 +21,6 @@ services:
       - "9000:9000"
     restart: unless-stopped
     container_name: php81
-    user: 1000:1000
     volumes:
       - ./app:/var/www/html:z
       - ./php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:z
