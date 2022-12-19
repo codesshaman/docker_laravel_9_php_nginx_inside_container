@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 
 WORKDIR /var/www/
 
@@ -46,23 +46,16 @@ COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN addgroup --gid $UID user && \
-    adduser -D -u $UID -G www-data -G root -G user user && \
-    mkdir -p /home/user/.composer && \
-    chown -R user:user /home/user
+# RUN addgroup --gid $UID user && \
+#     adduser -D -u $UID -G www-data -G root -G user user && \
+#     mkdir -p /home/user/.composer && \
+#     chown -R user:user /home/user
 
-RUN chown -R user.user /var/www/ /run /var/lib/nginx /var/log/nginx
+# RUN chown -R user.user /var/www/ /run /var/lib/nginx /var/log/nginx
 
-USER user
+# USER user
 
-# COPY --chown=user laravel/* /var/www/
-# COPY --chown=user laravel/public/* /var/www/public
-
-# RUN tar -czvf /run/laravel.tar.gz * 
-
-# RUN touch .env
-
-RUN composer create-project laravel/laravel .
+# RUN composer create-project laravel/laravel .
 
 EXPOSE 80
 
