@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
     container_name: nginx
     depends_on:
-      - php81
+      - composer
 
   php81:
     image: php:8.2.1RC1-fpm-alpine3.17
@@ -24,3 +24,18 @@ services:
     volumes:
       - ./app:/var/www/html:z
       - ./php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:z
+
+  composer:
+      image: composer:2.0.8
+      volumes:
+        - ./app:/var/www/html:z
+      working_dir: /var/www/html
+      # Install laravel
+      command: composer create-project laravel/laravel laravel
+      # # Install composer
+      # command: composer install
+      # Update composer
+      command: composer update
+      container_name: composer
+      depends_on:
+        - php81
