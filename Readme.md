@@ -14,7 +14,13 @@ For building configuration change composer commands in makefile and use
 
 ``make build``
 
-In process of building running php-composer container and execute container commands (laravel creation for example). If your not use laravel and composer, you can commit lines with this commands.
+In process of building running php-composer container and execute container commands (laravel creation for example).
+
+laravel will be available in the next address:
+
+``http://localhost/laravel/public/index.php``
+
+If your not use laravel and composer, you can commit lines with this commands.
 
 ### Stop configuration
 
